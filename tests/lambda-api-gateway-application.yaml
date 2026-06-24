@@ -1,0 +1,39 @@
+- description: Implements minimal Lambda API Gateway application
+  vars:
+    artifact_dir: file://artifact-dir.js
+    prompt: |
+      {{common_prompt}}
+      Create Terraform for a serverless application in ./{{artifact_dir}} with:
+      - Lambda function
+      - API Gateway HTTP API with GET / endpoint
+      - Lambda response body: {"message": "Hello World"}
+      - CloudWatch log group with retention
+      - Least-privilege IAM role for Lambda execution
+      - Consistent tags
+      - Proper versions.tf, variables.tf, main.tf, outputs.tf
+  assert:
+    - type: agent-rubric
+      provider: file://providers/opencode-sdk-gpt-5-mini.yaml
+      value: |
+        {{common_grader}}
+        Pass only if ALL of the following are true:
+        - Defines a Lambda function.
+        - Defines an API Gateway HTTP API or REST API with GET / route.
+        - Connects the API Gateway route to the Lambda function.
+        - Lambda response is intended to return {"message": "Hello World"}.
+        - Defines a CloudWatch log group with explicit retention.
+        - Lambda IAM role follows least privilege for basic execution/logging.
+        - Does not attach AdministratorAccess or broad AWS-managed policies beyond narrowly justified Lambda execution permissions.
+        - Uses consistent tags.
+        - Includes versions.tf, variables.tf, main.tf, outputs.tf.
+        - Variables have descriptions and sensible validation where applicable.
+        - Outputs include useful values such as API endpoint and Lambda name or ARN.
+        - Terraform syntax is coherent and likely to pass terraform fmt/validate.
+        
+        Fail if:
+        - API Gateway is missing.
+        - Lambda is missing.
+        - API Gateway is not connected to Lambda.
+        - IAM uses Action "*" or broad Resource "*" without justification.
+        - Required Terraform files are missing.
+      

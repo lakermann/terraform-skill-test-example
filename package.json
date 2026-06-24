@@ -1,0 +1,21 @@
+{
+  "name": "terraform-skill-test-example",
+  "version": "1.0.0",
+  "description": "Evaluate Terraform AWS implementation quality across multiple models using an included skill",
+  "scripts": {
+    "evaluation": "OPENAI_API_KEY=DUMMY promptfoo eval",
+    "evaluation-debug": "OPENAI_API_KEY=DUMMY promptfoo eval --verbose",
+    "view": "promptfoo view"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lakermann/terraform-skill-test-example.git"
+  },
+  "author": "Lukas Akermann",
+  "license": "MIT",
+  "homepage": "https://github.com/lakermann/terraform-skill-test-example#readme",
+  "dependencies": {
+    "@opencode-ai/sdk": "^1.17.9",
+    "promptfoo": "^0.121.17"
+  }
+}

@@ -1,0 +1,5 @@
+id: opencode:sdk
+config:
+  provider_id: github-copilot
+  model: gpt-5-mini
+  working_dir: './test-artifacts'

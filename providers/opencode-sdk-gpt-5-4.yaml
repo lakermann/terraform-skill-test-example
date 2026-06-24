@@ -1,0 +1,13 @@
+id: opencode:sdk
+label: gpt-5.4
+config:
+  provider_id: github-copilot
+  model: gpt-5.4
+  working_dir: './test-artifacts'
+  tools:
+    skill: true
+    edit: true
+    write: true
+  permission:
+    external_directory: deny
+    doom_loop: deny

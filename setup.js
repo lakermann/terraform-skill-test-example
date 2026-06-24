@@ -1,13 +1,10 @@
-const fs = require('fs');
+import fs from 'node:fs';
 
-const VERSIONS = ['gpt-5.4', 'gpt-5.5'];
+const FIXTURES_DIR = './fixtures/.agents';
+const TEST_ARTIFACTS_DIR = './test-artifacts';
 
-module.exports = async function beforeAll() {
-    for (const version of VERSIONS) {
-        const dir = `./test/${version}`;
-
-        fs.rmSync(dir, { recursive: true, force: true });
-        fs.mkdirSync(dir, { recursive: true });
-        fs.cpSync('./fixtures/.agents', `${dir}/.agents`, { recursive: true });
-    }
-};
+export async function beforeAll() {
+    fs.rmSync(TEST_ARTIFACTS_DIR, { recursive: true, force: true });
+    fs.mkdirSync(TEST_ARTIFACTS_DIR, { recursive: true });
+    fs.cpSync(FIXTURES_DIR, `${TEST_ARTIFACTS_DIR}/.agents`, { recursive: true });
+}

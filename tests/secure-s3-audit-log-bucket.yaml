@@ -1,0 +1,43 @@
+- description: Implements production-grade secure S3 audit log bucket
+  vars:
+    artifact_dir: file://artifact-dir.js
+    prompt: |
+      {{common_prompt}}
+      Create Terraform in ./{{artifact_dir}} for a production S3 bucket used to store application audit logs.
+      
+      Requirements:
+      - No public access
+      - Encryption at rest
+      - Versioning enabled
+      - Lifecycle rule to transition old logs to cheaper storage
+      - Bucket policy should require TLS
+      - Consistent tags
+      - Proper versions.tf, variables.tf, main.tf, outputs.tf
+  assert:
+    - type: agent-rubric
+      provider: file://providers/opencode-sdk-gpt-5-mini.yaml
+      value: |
+        {{common_grader}}
+        Pass only if ALL of the following are true:
+        - Defines an S3 bucket suitable for audit logs.
+        - Blocks all public access using aws_s3_bucket_public_access_block.
+        - Enables bucket versioning.
+        - Enables server-side encryption, preferably using KMS or a clearly configurable KMS key.
+        - Adds a bucket policy that denies non-TLS requests using aws:SecureTransport = false.
+        - Includes lifecycle management for older objects, such as transition to STANDARD_IA, GLACIER, or DEEP_ARCHIVE.
+        - Uses ownership controls or ACL-safe defaults.
+        - Does not configure public ACLs or public bucket policies.
+        - Applies consistent tags.
+        - Has variables with descriptions and sensible validation where applicable.
+        - Has useful outputs, such as bucket name and bucket ARN.
+        - Contains no hardcoded secrets or credentials.
+        - Includes versions.tf, variables.tf, main.tf, outputs.tf.
+        - Terraform syntax is coherent and likely to pass terraform fmt/validate.
+        
+        Fail if:
+        - Public access is possible.
+        - Encryption is missing.
+        - Versioning is missing.
+        - TLS enforcement is missing.
+        - Any AWS credentials or secrets are hardcoded.
+      
